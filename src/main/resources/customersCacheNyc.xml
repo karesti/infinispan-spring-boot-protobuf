@@ -1,0 +1,6 @@
+<distributed-cache name="customers">
+    <encoding media-type="application/x-protostream"/>
+    <backups>
+        <backup site="LON" strategy="SYNC" failure-policy="WARN"/>
+    </backups>
+</distributed-cache>
