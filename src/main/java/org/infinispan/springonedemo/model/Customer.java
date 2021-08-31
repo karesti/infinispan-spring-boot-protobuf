@@ -6,18 +6,20 @@ import org.infinispan.protostream.annotations.ProtoField;
 
 import java.util.Objects;
 
-@ProtoDoc("Indexed")
+@ProtoDoc("@Indexed")
 public class Customer {
 
    private final String id;
    private final String name;
    private final City city;
+   private final Integer age;
 
    @ProtoFactory
-   public Customer(String id, String name, City city) {
+   public Customer(String id, String name, City city, Integer age) {
       this.id = id;
       this.name = name;
       this.city = city;
+      this.age = age;
    }
 
    @ProtoField(value = 1, required = true)
@@ -36,9 +38,10 @@ public class Customer {
       return this.city;
    }
 
-   @Override
-   public String toString() {
-      return "Customer{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", city=" + city + '}';
+   @ProtoField(value = 4, required = true)
+   @ProtoDoc("@Field(index=Index.YES, analyze = Analyze.NO, store = Store.YES)")
+   public Integer getAge() {
+      return this.age;
    }
 
    @Override
@@ -48,11 +51,17 @@ public class Customer {
       if (o == null || getClass() != o.getClass())
          return false;
       Customer customer = (Customer) o;
-      return Objects.equals(id, customer.id) && Objects.equals(name, customer.name) && city == customer.city;
+      return Objects.equals(id, customer.id) && Objects.equals(name, customer.name) && city == customer.city && Objects
+            .equals(age, customer.age);
+   }
+
+   @Override
+   public String toString() {
+      return "Customer{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", city=" + city + ", age=" + age + '}';
    }
 
    @Override
    public int hashCode() {
-      return Objects.hash(id, name, city);
+      return Objects.hash(id, name, city, age);
    }
 }
